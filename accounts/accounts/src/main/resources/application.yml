@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: accounts
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 12345
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update   # dev có thể dùng create-drop để reset mỗi lần chạy
+    show-sql: true
+  sql:
+    init:
+      mode: never
