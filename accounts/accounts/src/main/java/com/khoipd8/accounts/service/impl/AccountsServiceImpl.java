@@ -1,10 +1,13 @@
 package com.khoipd8.accounts.service.impl;
 
 import com.khoipd8.accounts.constants.AccountsConstants;
+import com.khoipd8.accounts.dto.AccountsDto;
 import com.khoipd8.accounts.dto.CustomerDto;
 import com.khoipd8.accounts.entity.Accounts;
 import com.khoipd8.accounts.entity.Customer;
 import com.khoipd8.accounts.exception.CustomerAlreadyExistsException;
+import com.khoipd8.accounts.exception.ResourceNotFoundException;
+import com.khoipd8.accounts.mapper.AccountsMapper;
 import com.khoipd8.accounts.mapper.CustomerMapper;
 import com.khoipd8.accounts.repository.AccountsRepository;
 import com.khoipd8.accounts.repository.CustomerRepository;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -56,5 +60,26 @@ public class AccountsServiceImpl implements IAccountsService {
         account.setCreatedBy("Anonymous");
 
         accountsRepository.save(account);
+    }
+
+    @Override
+    public CustomerDto fetchAccountDetails(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+            () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+
+        List<Accounts> accounts = accountsRepository.findAllByCustomer_CustomerId(customer.getCustomerId());
+
+        if (accounts.isEmpty()) {
+            throw new ResourceNotFoundException("Accounts", "customerId", customer.getCustomerId().toString());
+        }
+
+        // Map Customer -> DTO
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+
+        // Map List<Accounts> -> List<AccountsDto>
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts));
+
+        return customerDto;
     }
 }

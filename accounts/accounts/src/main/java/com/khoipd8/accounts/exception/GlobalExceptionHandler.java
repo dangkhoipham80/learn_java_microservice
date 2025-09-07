@@ -36,4 +36,29 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    /**
+     * Handle {@link ResourceNotFoundException} by returning an error response with a 404 NOT FOUND status.
+     *
+     * @param exception the exception
+     * @param webRequest the web request
+     * @return the error response
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(
+            ResourceNotFoundException exception,
+            WebRequest webRequest
+    ) {
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+
+        );
+        return new ResponseEntity<>(
+                errorResponseDto,
+                HttpStatus.NOT_FOUND
+        );
+    }
 }

@@ -2,6 +2,8 @@ package com.khoipd8.accounts.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CustomerDto {
 
@@ -10,4 +12,6 @@ public class CustomerDto {
     private String email;
 
     private String mobileNumber;
+
+    private List<AccountsDto> accountsDto;
 }
