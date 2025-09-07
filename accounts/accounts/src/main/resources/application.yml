@@ -19,3 +19,22 @@ spring:
   sql:
     init:
       mode: never
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs        # default
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui         # truy cập qua /swagger-ui hoặc /swagger-ui/index.html
+    operationsSorter: method  # sắp xếp endpoint theo HTTP method
+    tagsSorter: alpha
+    display-request-duration: true
+  packages-to-scan: com.khoipd8.accounts.controller  # quét package controller của bạn
+
+# Nếu dùng Actuator và muốn hiển thị health/info trong OpenAPI, có thể bật thêm (tùy nhu cầu)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

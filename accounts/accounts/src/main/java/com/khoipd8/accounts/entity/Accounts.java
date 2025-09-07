@@ -15,8 +15,9 @@ public class Accounts extends BaseEntity {
     @Column(name="account_number")
     private Long accountNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id", nullable = false)
+    @ToString.Exclude
     private Customer customer;
 
     @Column(name="account_type", nullable = false, length = 100)

@@ -2,6 +2,7 @@ package com.khoipd8.accounts.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -23,4 +24,8 @@ public class Customer extends BaseEntity {
 
     @Column(name="mobile_number", nullable = false, length = 20)
     private String mobileNumber;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Accounts> accounts;
 }
